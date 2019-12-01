@@ -202,8 +202,9 @@ router.post("/checkout", async (req, res) => {
       req.session.zipCode = addressInfo.postal_code;
       req.session.state = addressInfo.state;
       req.session.firstName = charge.billing_details.name.split(" ")[0];
-      req.session.lastName = charge.billing_details.name.split(" ")[1]
+      req.session.lastName = charge.billing_details.name.split(" ")[1];
       req.session.email = charge.receipt_email
+      req.session.grandTotal = grandTotal;
     //   console.log("REQ.SESSION: ", req.session)
         // console.log("New Cart Session Created :", req.session.cart_id)
 

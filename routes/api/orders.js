@@ -16,17 +16,18 @@ router.post("/confirm", sendBuyerEmail); // handle the route at yourdomain.com/s
 
 const setOrderINFO = (itemDetails) => {
     var ordersINFO =`<table style="width:100%"> <tr>
-    <th>Name</th>
-    <th>Qty</th>
-    <th>Price</th>
+    <th>Name</th><hr>
+    <th>Qty</th><hr>
+    <th>Price</th><hr>
+    <th>Sub Total</th><hr>
   </tr>`;
     // console.log("ITEM DETAILS", itemDetails)
     for(let j=0;j<itemDetails.length;j++){
         // console.log(itemDetails[j].name)
-        ordersINFO += `<tr> <th> ${itemDetails[j].name} </th> <th> ${itemDetails[j].desiredQuantity} </th>  <th> $${itemDetails[j].price} </th> </tr>`
+        ordersINFO += `<tr> <th> ${itemDetails[j].name} </th> <th> ${itemDetails[j].desiredQuantity} </th>  <th> $${itemDetails[j].price} </th> <th> $${itemDetails[j].total} </th></tr>`
     }
     ordersINFO += "</table>"
-    console.log("HERE TEST ORDERS ", ordersINFO);
+    // console.log("HERE TEST ORDERS ", ordersINFO);
     return ordersINFO
 }
 
@@ -35,7 +36,8 @@ function sendBuyerEmail(req, res) {
     // console.log("hitting email confirmation, req.body is: ");
     const { total, orderDetails } = req.body;
     var ordersInfo = setOrderINFO(orderDetails);
-    console.log("HGERE TEST ORDERS INFO STRING", ordersInfo)
+    var afterShipping = total + 4.98;
+    // console.log("HGERE TEST ORDERS INFO STRING", ordersInfo)
     const firstName = req.session.firstName, lastName = req.session.lastName, email=req.session.email; 
     // Not the movie transporter!
     var transporter = nodemailer.createTransport({
@@ -325,7 +327,7 @@ function sendBuyerEmail(req, res) {
                                                         <p style="margin:0;padding-bottom:1em"><span style="line-height: 1.6em;"><span style="line-height: 20.7999992370605px;">Hey ${req.session.firstName+" "+req.session.lastName}, $</span>
                                                           <br>
                                                           <br>Your Huckberry order
-                                                          <a href="https://huckberry.com/login" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 20.8px;"><span style="line-height: 20.8px;">R123456789</span>
+                                                          <a href="https://huckberry.com/login" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 20.8px;"><span style="line-height: 20.8px;">R123456789 ${req.session.orderID}</span>
                                                           </a> has successfully been placed. You'll find all the details about your order below, and we'll send you a shipping confirmation email as soon
                                                           as your order ships. In the meantime, you can</span>
                                                           <a href="#" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 1.6em;">share Tegrity and earn store credit!</a>
@@ -382,7 +384,7 @@ function sendBuyerEmail(req, res) {
                                                         </a>
                                                       </td>
                                                       <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;border-right:none;border-bottom:none;text-align:left;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
-                                                        <span style="line-height: 20.7999992370605px;">4/7/2016</span>
+                                                        <span style="line-height: 20.7999992370605px;">4/7/2016${req.session.orderDate}</span>
     
                                                       </td>
                                                     </tr>
@@ -518,46 +520,11 @@ function sendBuyerEmail(req, res) {
                                             </tr>
                                           </tbody>
                                         </table>
-                                        <table border="0" cellpadding="0" cellspacing="0" class="kmTableBlock" width="100%" style="border-collapse:collapse;">
-                                          <tbody class="kmTableBlockOuter">
-                                            <tr>
-                                              <td class="kmTableBlockInner" valign="top" style="border-collapse:collapse;;padding-top:9px;padding-bottom:9px;background-color:#FFFFFF;padding-left:18px;padding-right:18px;">
-                                                <table align="left" border="0" cellpadding="0" cellspacing="0" class="kmTable" width="100%" style="border-collapse:collapse;;">
-                                                  <thead>
-                                                    <tr>
-                                                      <th valign="top" class="kmTextContent" style="color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:left;width:35%;padding-top:4px;font-weight:bold;padding-bottom:4px;padding-left:0px;padding-right:0px;">Item</th>
-                                                      <th valign="top" class="kmTextContent" style="color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:left;width:45%;padding-top:4px;font-weight:bold;padding-bottom:4px;padding-left:0px;padding-right:0px;"></th>
-                                                      <th valign="top" class="kmTextContent" style="color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:right;padding-top:4px;font-weight:bold;padding-bottom:4px;padding-left:0px;padding-right:0px;">Qty</th>
-                                                      <th valign="top" class="kmTextContent" style="color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:right;padding-top:4px;font-weight:bold;padding-bottom:4px;padding-left:0px;padding-right:0px;">Price</th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    <tr class="kmTableRow">
-                                                      <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:left;width:35%;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
-                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
-                                                          <tr>
-                                                            <td class="kmImageContent" valign="top" style="border-collapse:collapse;;padding:0;padding-top:0px;padding-bottom:0;padding-left:9px;padding-right:9px;">
-                                                              <a href="http://send.huckberry.com/mpss/c/4gA/q2wVAA/t.1w5/m3_D2AdWTb2cQK08YkBg-w/h4/xUPY4mtGQ862H6a97Mk3a591MMp2B3iqo0WA6LbZpwA-3D'Home%20Goods',%20u'Hasami%20Porcelain',%20u'Coffee%20Shop',%20u'Wedding%20Gift%20Shop'%5D/category/p/32672-13-oz-mug-cup-set-of-2?utm_campaign=Order+Confirmation+%28a8pbk7%29&amp;utm_medium=email&amp;utm_source=Order+Confirmation"
-                                                                target="_self" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline">
-                                                                <img align="left" alt="" class="kmImage" src="https://huckberry.imgix.net/spree/products/166894/original/L2kMsESAgP_13_oz_mug_cup_set_of_2_0_original.jpg?fit=max&amp;w=500" width="174" style="border:0;height:auto;line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;margin-right:0;max-width:200px;">
-                                                              </a>
-                                                            </td>
-                                                          </tr>
-                                                        </table>
-                                                      </td>
-                                                      <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:left;width:45%;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
-                                                        ${ordersInfo}
-                                                      </td>
-                                                      <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:right;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
-                                                        <p style="margin:0;padding-bottom:0">1</p>
-                                                      </td>
-                                                      <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;border-right:none;text-align:right;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">$55.00</td>
-                                                    </tr>
-                                                  </tbody>
-                                                </table>
+                                        
                                               </td>
                                             </tr>
                                           </tbody>
+                                          ${ordersInfo}
                                         </table>
                                         <table border="0" cellpadding="0" cellspacing="0" class="kmTextBlock" width="100%" style="border-collapse:collapse;">
                                           <tbody class="kmTextBlockOuter">
@@ -567,7 +534,7 @@ function sendBuyerEmail(req, res) {
                                                   <tbody>
                                                     <tr>
                                                       <td class="kmTextContent" valign="top" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;padding-top:9px;padding-bottom:9px;background-color:#FFFFFF;padding-left:18px;padding-right:18px;">
-                                                        <p style="margin:0;padding-bottom:0;text-align: right;"><strong>Subtotal: </strong>$55.00
+                                                        <p style="margin:0;padding-bottom:0;text-align: right;"><strong>Subtotal: </strong>${req.session.grandTotal}
                                                           <br>
                                                           <strong>Shipping: </strong><span style="line-height: 20.7999992370605px; text-align: right;">$4.98</span><strong><br>
     Sales Tax: </strong>$0.00
@@ -599,11 +566,12 @@ function sendBuyerEmail(req, res) {
                                                         <table width="100%;" style="border-collapse:collapse;">
                                                           <tbody>
                                                             <tr>
-                                                              <td style="border-collapse:collapse;;text-align: right;background:#e4e4e4;padding: 9px 18px;"> <strong style="font-size: 14px;">TOTAL  </strong><span style="font-size: 14px;">$59.98</span>
+                                                              <td style="border-collapse:collapse;;text-align: right;background:#e4e4e4;padding: 9px 18px;"> <strong style="font-size: 14px;">TOTAL  </strong><span style="font-size: 14px;">$${afterShipping}</span>
                                                               </td>
                                                             </tr>
                                                           </tbody>
                                                         </table>
+                                                        <hr>
                                                       </td>
                                                     </tr>
                                                   </tbody>
@@ -1150,6 +1118,12 @@ router.get("/", (req, res) => {
 // @ route    POST api/orders
 // @ access   Public
 router.post("/", (req, res) => {
+    async function setOrdSession (ordID, ordDate){
+            req.session.orderID = ordID;
+            req.session.orderDate = ordDate
+            if(await req.session.orderID !== undefined && await req.session.orderDate !== undefined) await req.session.save()
+            console.log("HERE IS CURRENT SESSION AFTER ORDER SAVES:", req.session.orderID, "and: ", req.session.orderDate)
+    }
     // console.log('HERE TEST HERE SESSION IN ORDERS BACKE END', req.session)
     const {  total, orderDetails } = req.body;
     // let { state } = req.body;
@@ -1177,6 +1151,7 @@ router.post("/", (req, res) => {
         // Save Order to DB:
         newOrder.save().then(order => res.status(200).json({ message: "success", data: order }))
             .catch(err => res.status(400).json({ message: "Error", error: err }))
+    
     } else { // else no address2, without address 2 field:
         if (req.session.address2 === undefined) { address2 = "" }
         // if(state === undefined) {state = ""}
@@ -1195,8 +1170,15 @@ router.post("/", (req, res) => {
         
 
         // Save Order to DB:
-        newOrder.save().then(order => res.status(200).json({ message: "success", data: order }))
-            .catch(err => res.status(400).json({ message: "Error", error: err }))
+        newOrder.save((err, result) => {
+            if(err){
+                return res.status(400).json({ message: "Error", error: err })
+            }else{
+                // console.log("HERE TEST IN ORDERS SAVE RES", result._id, "date :", result.date)
+                setOrdSession(result._id, result.date)
+                return res.status(200).json({ message: "success", data: result })
+            }
+        })
     }
 });
 

@@ -218,6 +218,14 @@ class Cart extends Component {
             //Close modal:
             // this.toggle()      
     }
+
+    async sendEmailBackend(newOrd){
+        await Axios.post("api/orders/confirm", newOrd)
+        .then(res => {
+            console.log("Hitting DB for email Confirm...")
+        })
+        .catch(err => console.log("Failed To Send Email...:", err))
+    }
     
 
     purchaseOnSubmit = () => {
@@ -274,11 +282,7 @@ class Cart extends Component {
             }).catch(err => console.log("Failed To Create Order!: ", err))
 
         // Send email to buyer from backend:
-        Axios.post("api/orders/confirm", newOrder)
-            .then(res => {
-                console.log("Hitting DB for email Confirm...")
-            })
-            .catch(err => console.log("Failed To Send Email...:", err))
+        this.sendEmailBackend(newOrder)
 
         // Query Backend to kill ALL session:
         Axios.get("api/carts/kill")
