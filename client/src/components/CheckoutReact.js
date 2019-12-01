@@ -55,7 +55,7 @@ class CheckoutReact extends Component {
         return (
             <div className="container">
                 <div className="product">
-                    <h3>On Sale · ${this.props.grandTotal}</h3>
+                    <h3>On Sale · ${this.props.grandTotal.toFixed(2)}</h3>
                 </div>
                 <StripeCheckout
                     stripeKey="pk_test_LOtzCZdEU2A1hTZOYzO6zOSN008JLYM0SA"

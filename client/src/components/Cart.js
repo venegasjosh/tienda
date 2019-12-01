@@ -351,7 +351,7 @@ class Cart extends Component {
                         {products.length ? products.map((product, i) => (
                             <tr>
                                 <th key={product.itemID} scope="row">{i + 1}</th>
-                                <div style={{ display: 'none' }}>Grand Total: $ {grandTotal += product.total}</div>
+                                <div style={{ display: 'none' }}>Grand Total: $ {(grandTotal += product.total).toFixed(2)}</div>
                                 {/*<td><Link to="/showAll">{product.name}</Link></td>*/}
                                 <td><Link to={{ pathname: `/showItem`, state: { itemID: product.itemID } }}>{product.name}</Link></td>
                                 <td>{product.desiredQuantity}</td>
