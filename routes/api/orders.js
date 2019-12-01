@@ -15,13 +15,18 @@ router.post("/confirm", sendBuyerEmail); // handle the route at yourdomain.com/s
 
 
 const setOrderINFO = (itemDetails) => {
-    var ordersINFO ="";
-    console.log("ITEM DETAILS", itemDetails)
+    var ordersINFO =`<table style="width:100%"> <tr>
+    <th>Name</th>
+    <th>Qty</th>
+    <th>Price</th>
+  </tr>`;
+    // console.log("ITEM DETAILS", itemDetails)
     for(let j=0;j<itemDetails.length;j++){
         // console.log(itemDetails[j].name)
-        ordersINFO += `<p> ${itemDetails[j].name} </p> <p> ${itemDetails[j].price} </p>`
+        ordersINFO += `<tr> <th> ${itemDetails[j].name} </th> <th> ${itemDetails[j].desiredQuantity} </th>  <th> $${itemDetails[j].price} </th> </tr>`
     }
-    console.log("HERE TEST ", ordersINFO);
+    ordersINFO += "</table>"
+    console.log("HERE TEST ORDERS ", ordersINFO);
     return ordersINFO
 }
 
@@ -541,14 +546,7 @@ function sendBuyerEmail(req, res) {
                                                         </table>
                                                       </td>
                                                       <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:left;width:45%;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
-                                                        <p style="margin:0;padding-bottom:0">Hasami Porcelain
-                                                          <br>13 oz Mug Cup (Set of 2)
-                                                          <br>Gloss Gray
-                                                          <br>13 oz
-                                                          <br> <em> Returnable within 30 days</em>
-                                                          <br>
-                                                            ${ordersInfo}
-                                                        </p>
+                                                        ${ordersInfo}
                                                       </td>
                                                       <td valign="top" class="kmTextContent" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;text-align:right;;border-top-style:solid;padding-bottom:4px;padding-right:0px;padding-left:0px;padding-top:4px;border-top-color:#d9d9d9;border-top-width:1px;">
                                                         <p style="margin:0;padding-bottom:0">1</p>
