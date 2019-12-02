@@ -1172,11 +1172,11 @@ router.post("/", (req, res) => {
         // Save Order to DB:
         newOrder.save((err, result) => {
             if(err){
-                return res.status(400).json({ message: "Error", error: err })
+                // return res.status(400).json({ message: "Error", error: err })
             }else{
                 // console.log("HERE TEST IN ORDERS SAVE RES", result._id, "date :", result.date)
                 setOrdSession(result._id, result.date)
-                return res.status(200).json({ message: "success", data: result })
+                // return res.status(200).json({ message: "success", data: result })
             }
         })
     }

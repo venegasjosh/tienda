@@ -56,6 +56,7 @@ class Cart extends Component {
         }
     }
     componentDidMount() {
+        // this.killSession()
         // console.log("tEST lOCAL STORAGE OF STATUS: ", localStorage.getItem('status'))
         // *note* If STRIPE PAYMENT WAS A SUCCESS, THEN DO FINAL PURCHASE FUNCTIONALITY AND CREATING OF ORDER: THEN/ELSE HIT DB FOR ALL CARTS/ITEMS IN CART:
         let newStatus = localStorage.getItem('status');
@@ -226,6 +227,14 @@ class Cart extends Component {
         })
         .catch(err => console.log("Failed To Send Email...:", err))
     }
+    async sendOrdersBackend(newOrd){
+        await Axios.post("/api/orders", newOrd)
+            .then(res => {
+                console.log("Order Successfully Placed!")
+                // Redirect to Successful orders page:
+                this.props.history.push('/orderSuccess');
+            }).catch(err => console.log("Failed To Create Order!: ", err))
+    }
     
 
     purchaseOnSubmit = () => {
@@ -274,12 +283,7 @@ class Cart extends Component {
         }
 
         // Send Order to DB and save:
-        Axios.post("/api/orders", newOrder)
-            .then(res => {
-                console.log("Order Successfully Placed!")
-                // Redirect to Successful orders page:
-                this.props.history.push('/orderSuccess');
-            }).catch(err => console.log("Failed To Create Order!: ", err))
+        this.sendOrdersBackend(newOrder);
 
         // Send email to buyer from backend:
         this.sendEmailBackend(newOrder)
@@ -351,7 +355,7 @@ class Cart extends Component {
                         {products.length ? products.map((product, i) => (
                             <tr>
                                 <th key={product.itemID} scope="row">{i + 1}</th>
-                                <div style={{ display: 'none' }}>Grand Total: $ {(grandTotal += product.total).toFixed(2)}</div>
+                                <div style={{ display: 'none' }}>Grand Total: $ {grandTotal += product.total}</div>
                                 {/*<td><Link to="/showAll">{product.name}</Link></td>*/}
                                 <td><Link to={{ pathname: `/showItem`, state: { itemID: product.itemID } }}>{product.name}</Link></td>
                                 <td>{product.desiredQuantity}</td>
