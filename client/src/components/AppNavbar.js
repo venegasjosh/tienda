@@ -26,19 +26,14 @@ toggle= () => {
         <div>
             <Navbar color="dark" dark expand="sm" className="mb-5">
             <Container>
-                <NavbarBrand href="/">Tegrity Sales!</NavbarBrand>
+                <NavbarBrand href="/">Tienda</NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                     <NavItem>
                         <NavLink><Link to="/cart">Shopping Cart</Link></NavLink> 
                     </NavItem>
-                    <NavItem>
-                        <NavLink href="https://github.com/EsC369">Ryan's GitHub</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="http://RyanKenSmith.com">Ryan's Portfolio</NavLink>
-                    </NavItem>
+                    
                     |
                     <NavItem>
                         <NavLink href="https://github.com/venegasjosh">Josh's GitHub</NavLink>
