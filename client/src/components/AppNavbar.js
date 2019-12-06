@@ -34,13 +34,6 @@ toggle= () => {
                         <NavLink><Link to="/cart">Shopping Cart</Link></NavLink> 
                     </NavItem>
                     
-                    |
-                    <NavItem>
-                        <NavLink href="https://github.com/venegasjosh">Josh's GitHub</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="http://venegasjosh.github.io">Josh's Portfolio</NavLink>
-                    </NavItem>
                     </Nav>
                 </Collapse>
             </Container>

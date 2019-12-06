@@ -45,8 +45,8 @@ function sendBuyerEmail(req, res) {
   port: 465,
   secure: true,
   auth: {
-    user: "CodeSquadEsC1337@gmail.com",
-    pass: "LeetLife369$"
+    user: "citruslover.band@gmail.com",
+    pass: "Goldbabygold2018"
   }
 });
     // var text = 'Hello world from \n\n' + "EsC- CodeSquad," + `ORDER DETAILS: `
@@ -1078,8 +1078,10 @@ function sendBuyerEmail(req, res) {
     
     </html>`;
 
+        console.log(req.body, req.session, "******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************88")
+
     var mailOptions = {
-        from: '"Code Squad "<no-Reply@gmail.com>', // sender address
+        from: '"Citrus Lover"<no-Reply@gmail.com>', // sender address
         to: `${email}`, // list of receivers
         subject: `${firstName} ${lastName} : Code Squad Recipt`, // Subject line
         //text: text, //, // plaintext body
