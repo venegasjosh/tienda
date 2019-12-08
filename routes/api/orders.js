@@ -15,42 +15,49 @@ router.post("/confirm", sendBuyerEmail); // handle the route at yourdomain.com/s
 
 
 const setOrderINFO = (itemDetails) => {
-    var ordersINFO =`<table style="width:100%"> <tr>
+  var ordersINFO = `<table style="width:100%"> <tr>
+    <th>Id</th><hr>
     <th>Name</th><hr>
     <th>Qty</th><hr>
     <th>Price</th><hr>
     <th>Sub Total</th><hr>
   </tr>`;
-    // console.log("ITEM DETAILS", itemDetails)
-    for(let j=0;j<itemDetails.length;j++){
-        // console.log(itemDetails[j].name)
-        ordersINFO += `<tr> <th> ${itemDetails[j].name} </th> <th> ${itemDetails[j].desiredQuantity} </th>  <th> $${itemDetails[j].price} </th> <th> $${itemDetails[j].total} </th></tr>`
-    }
-    ordersINFO += "</table>"
-    // console.log("HERE TEST ORDERS ", ordersINFO);
-    return ordersINFO
+  // console.log("ITEM DETAILS", itemDetails)
+  for (let j = 0; j < itemDetails.length; j++) {
+    // console.log(itemDetails[j].name)
+    
+    ordersINFO += `<tr> <th> ${itemDetails[j]._id} </th> <th> ${itemDetails[j].name} </th> <th> ${itemDetails[j].desiredQuantity} </th>  <th> $${itemDetails[j].price} </th> <th> $${itemDetails[j].total} </th></tr>`
+  }
+  ordersINFO += "</table>"
+  // console.log("HERE TEST ORDERS ", ordersINFO);
+  return ordersINFO
 }
 
 function sendBuyerEmail(req, res) {
-    
-    // console.log("hitting email confirmation, req.body is: ");
-    const { total, orderDetails } = req.body;
-    var ordersInfo = setOrderINFO(orderDetails);
-    var afterShipping = total + 4.98;
-    // console.log("HGERE TEST ORDERS INFO STRING", ordersInfo)
-    const firstName = req.session.firstName, lastName = req.session.lastName, email=req.session.email; 
-    // Not the movie transporter!
-    var transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: "citruslover.band@gmail.com",
-    pass: "Goldbabygold2018"
-  }
-});
-    // var text = 'Hello world from \n\n' + "EsC- CodeSquad," + `ORDER DETAILS: `
-    var htmlTest = `<!DOCTYPE html>
+
+  // console.log("hitting email confirmation, req.body is: ");
+  const { total, orderDetails } = req.body;
+  
+  var ordersInfo = setOrderINFO(orderDetails);
+  
+  var afterShipping = total + 4.98;
+  // console.log("HGERE TEST ORDERS INFO STRING", ordersInfo)
+  const firstName = req.session.firstName;
+
+  const lastName = req.session.lastName;
+  const email = req.session.email;
+  // Not the movie transporter!
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: "citruslover.band@gmail.com",
+      pass: "Goldbabygold2018"
+    }
+  });
+  // var text = 'Hello world from \n\n' + "EsC- CodeSquad," + `ORDER DETAILS: `
+  var htmlTest = `<!DOCTYPE html>
     <html>
     
     <head>
@@ -324,10 +331,10 @@ function sendBuyerEmail(req, res) {
                                                   <tbody>
                                                     <tr>
                                                       <td class="kmTextContent" valign="top" style="border-collapse:collapse;;color:#505050;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;padding-top:9px;padding-bottom:9px;background-color:#FFFFFF;padding-left:18px;padding-right:18px;">
-                                                        <p style="margin:0;padding-bottom:1em"><span style="line-height: 1.6em;"><span style="line-height: 20.7999992370605px;">Hey ${req.session.firstName+" "+req.session.lastName}, $</span>
+                                                        <p style="margin:0;padding-bottom:1em"><span style="line-height: 1.6em;"><span style="line-height: 20.7999992370605px;">Hey  ${orderDetails._id} + ${req.session.firstName} + " " + ${req.session.lastName}, </span>
                                                           <br>
                                                           <br>Your Huckberry order
-                                                          <a href="https://huckberry.com/login" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 20.8px;"><span style="line-height: 20.8px;">R123456789 ${req.session.orderID}</span>
+                                                          <a href="https://huckberry.com/login" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 20.8px;"><span style="line-height: 20.8px;"> ${req.session.orderId} + " " + ${req.session.firstName}</span>
                                                           </a> has successfully been placed. You'll find all the details about your order below, and we'll send you a shipping confirmation email as soon
                                                           as your order ships. In the meantime, you can</span>
                                                           <a href="#" style="word-wrap:break-word;color:#E36E3A;font-weight:normal;text-decoration:underline;line-height: 1.6em;">share Tegrity and earn store credit!</a>
@@ -1078,27 +1085,27 @@ function sendBuyerEmail(req, res) {
     
     </html>`;
 
-        console.log(req.body, req.session, "******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************88")
+  console.log(req.body, req.session, "******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************88")
 
-    var mailOptions = {
-        from: '"Citrus Lover"<no-Reply@gmail.com>', // sender address
-        to: `${email}`, // list of receivers
-        subject: `${firstName} ${lastName} : Code Squad Recipt`, // Subject line
-        //text: text, //, // plaintext body
-        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-        html: htmlTest
-    };
+  var mailOptions = {
+    from: '"Citrus Lover"<no-Reply@gmail.com>', // sender address
+    to: `${email}`, // list of receivers
+    subject: `${firstName} ${lastName} : Code Squad Recipt`, // Subject line
+    //text: text, //, // plaintext body
+    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+    html: htmlTest
+  };
 
-    // Send email and handle response:
-    transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-        res.json({message: 'error'});
-    }else{
-        console.log('Message sent: ' + info.response);
-        res.json({message: info.response});
+  // Send email and handle response:
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+      res.json({ message: 'error' });
+    } else {
+      console.log('Message sent: ' + info.response);
+      res.json({ message: info.response });
     };
-    });
+  });
 }
 
 
@@ -1106,10 +1113,10 @@ function sendBuyerEmail(req, res) {
 // @ route    GET api/Orders
 // @ access   Public
 router.get("/", (req, res) => {
-    Order.find()
-        .sort({ date: -1 })
-        .then(orders => res.json(orders))
-        .catch(err => res.status(404).json({ message: "Error", error: err }))
+  Order.find()
+    .sort({ date: -1 })
+    .then(orders => res.json(orders))
+    .catch(err => res.status(404).json({ message: "Error", error: err }))
 });
 
 // router.get("/sessionTest", (req, res) => {
@@ -1120,119 +1127,122 @@ router.get("/", (req, res) => {
 // @ route    POST api/orders
 // @ access   Public
 router.post("/", (req, res) => {
-    async function setOrdSession (ordID, ordDate){
-            req.session.orderID = ordID;
-            req.session.orderDate = ordDate
-            if(await req.session.orderID !== undefined && await req.session.orderDate !== undefined) await req.session.save()
-            console.log("HERE IS CURRENT SESSION AFTER ORDER SAVES:", req.session.orderID, "and: ", req.session.orderDate)
-    }
-    // console.log('HERE TEST HERE SESSION IN ORDERS BACKE END', req.session)
-    const {  total, orderDetails } = req.body;
-    // let { state } = req.body;
-    // let { address2 } = req.body
-    // console.log("Grabbing from req.body", firstName, lastName, email, address, address2, total, city, state, experation)
-    // console.log("GRABBING FROM REQ.BODY ORDER DETAILS: ", orderDetails)
-    // console.log("HERE GRAND TOTAL: ", total)
-    // Create Order:
-    // If address 2 was entered then do this:
-    // if (address2 && address && address2 !== null && address2 !== undefined && address2 !== "") {
-        if(req.session.address2){
-        console.log("Hitting in Address 2 area")
-        // if(state === undefined) {state = ""}
-        const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
-        const newOrder = new Order({
-            firstName: req.session.firstName,
-            lastName:  req.session.lastName,
-            email: req.session.email,
-            address: newAddress,
-            total,
-            orderDetails: orderDetails,
-            status: "Order In",
-        });
-        // console.log("New order:", newOrder);
-        // Save Order to DB:
-        newOrder.save().then(order => res.status(200).json({ message: "success", data: order }))
-            .catch(err => res.status(400).json({ message: "Error", error: err }))
-    
-    } else { // else no address2, without address 2 field:
-        if (req.session.address2 === undefined) { address2 = "" }
-        // if(state === undefined) {state = ""}
-        // console.log("HERE GRAND TOTAL: ", total)
-        const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
-        const newOrder = new Order({
-            firstName: req.session.firstName,
-            lastName:  req.session.lastName,
-            email: req.session.email,
-            address: newAddress,
-            total: total,
-            orderDetails: orderDetails,
-            status: "Order In",
-        });
-        // console.log("New order else:", newOrder);
-        
+  async function setOrdSession(ordID, ordDate) {
+    req.session.orderID = ordID;
+    req.session.orderDate = ordDate
+    if (await req.session.orderID !== undefined && await req.session.orderDate !== undefined) await req.session.save()
+    console.log("HERE IS CURRENT SESSION AFTER ORDER SAVES:", req.session.orderID, "and: ", req.session.orderDate)
+  }
+  // console.log('HERE TEST HERE SESSION IN ORDERS BACKE END', req.session)
+  const { total, orderDetails } = req.body;
+  // let { state } = req.body;
+  // let { address2 } = req.body
+  // console.log("Grabbing from req.body", firstName, lastName, email, address, address2, total, city, state, experation)
+  // console.log("GRABBING FROM REQ.BODY ORDER DETAILS: ", orderDetails)
+  // console.log("HERE GRAND TOTAL: ", total)
+  // Create Order:
+  // If address 2 was entered then do this:
+  // if (address2 && address && address2 !== null && address2 !== undefined && address2 !== "") {
+  if (req.session.address2) {
+    console.log("Hitting in Address 2 area")
+    // if(state === undefined) {state = ""}
+    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
+    const newOrder = new Order({
+      orderId: req.session.orderID,
+      firstName: req.session.firstName,
+      lastName: req.session.lastName,
+      email: req.session.email,
+      address: newAddress,
+      total,
+      orderDetails: orderDetails,
+      status: "Order In",
+    });
+    // console.log("New order:", newOrder);
+    // Save Order to DB:
+    newOrder.save().then(order => res.status(200).json({ message: "success", data: order }))
+      .catch(err => res.status(400).json({ message: "Error", error: err }))
 
-        // Save Order to DB:
-        newOrder.save((err, result) => {
-            if(err){
-                // return res.status(400).json({ message: "Error", error: err })
-            }else{
-                // console.log("HERE TEST IN ORDERS SAVE RES", result._id, "date :", result.date)
-                setOrdSession(result._id, result.date)
-                // return res.status(200).json({ message: "success", data: result })
-            }
-        })
-    }
+  } else { // else no address2, without address 2 field:
+    if (req.session.address2 === undefined) { address2 = "" }
+    // if(state === undefined) {state = ""}
+    // console.log("HERE GRAND TOTAL: ", total)
+    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
+    const newOrder = new Order({
+      orderId: req.session.orderID,
+
+      firstName: req.session.firstName,
+      lastName: req.session.lastName,
+      email: req.session.email,
+      address: newAddress,
+      total: total,
+      orderDetails: orderDetails,
+      status: "Order In",
+    });
+    // console.log("New order else:", newOrder);
+
+
+    // Save Order to DB:
+    newOrder.save((err, result) => {
+      if (err) {
+        // return res.status(400).json({ message: "Error", error: err })
+      } else {
+        // console.log("HERE TEST IN ORDERS SAVE RES", result._id, "date :", result.date)
+        setOrdSession(result._id, result.date)
+        // return res.status(200).json({ message: "success", data: result })
+      }
+    })
+  }
 });
 
 // @ route    POST api/Orders/:id
 // @ desc    Delete a Order:
 // @ access   Public
 router.delete("/:id", (req, res) => {
-    Order.findById(req.params.id)
-        .then(order => order.remove().then(() => res.status(200).json({ message: "Order Successfully Removed!" })))
-        .catch(err => res.status(404).json({ message: "Error", error: "Order Doesn't Exist" }))
+  Order.findById(req.params.id)
+    .then(order => order.remove().then(() => res.status(200).json({ message: "Order Successfully Removed!" })))
+    .catch(err => res.status(404).json({ message: "Error", error: "Order Doesn't Exist" }))
 })
 
 // @ route    PUT api/Orders/ID
 // @ desc    Edit Order By ID Route
 // @ access   Private
 router.put("/:id", (req, res) => {
-    Order.findById(req.params.id, (err, order) => {
+  Order.findById(req.params.id, (err, order) => {
+    if (err) {
+      res.json({ message: "Error", error: err });
+    }
+    else {
+      // Weird way of doing so as usually entries wont even get this far, but if the entries are null, this will hit
+      try {
+        order.set(req.body)
+      } catch{
+        return res.status(400).json({ message: "Error", error: "Cannot save, one of the inputs is empty" })
+      }
+
+      order.save((err) => {
         if (err) {
-            res.json({ message: "Error", error: err });
+          res.status(400).json({ message: "Error", error: err });
         }
         else {
-            // Weird way of doing so as usually entries wont even get this far, but if the entries are null, this will hit
-            try {
-                order.set(req.body)
-            } catch{
-                return res.status(400).json({ message: "Error", error: "Cannot save, one of the inputs is empty" })
-            }
-
-            order.save((err) => {
-                if (err) {
-                    res.status(400).json({ message: "Error", error: err });
-                }
-                else {
-                    res.status(200).json({ message: "Success", data: order });
-                }
-            });
+          res.status(200).json({ message: "Success", data: order });
         }
-    });
+      });
+    }
+  });
 });
 
 // @ route    GET api/Orders/ID
 // @ desc    Show one Order by ID
 // @ access   Private
 router.get("/:id", (req, res) => {
-    Order.findById(req.params.id, (err, order) => {
-        if (err) {
-            res.json({ message: "Error", error: "ID doesn't exist..." });
-        }
-        else {
-            res.json({ message: "Success", data: order });
-        }
-    });
+  Order.findById(req.params.id, (err, order) => {
+    if (err) {
+      res.json({ message: "Error", error: "ID doesn't exist..." });
+    }
+    else {
+      res.json({ message: "Success", data: order });
+    }
+  });
 });
 
 module.exports = router;

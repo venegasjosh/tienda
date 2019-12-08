@@ -3,7 +3,7 @@ const router = express.Router();
 const uuid = require("uuid/v4");
 const app = express();
 // Stripe Middleware:
-const stripe = require("stripe")("sk_test_dB7xiM1vfq0PJFyvhfZ1zghO00AaFdDn11");
+const stripe = require("stripe")("sk_test_0XQb2SgTnVlKehrZ1FDP8lcA00yFcgaoDL");
 
 app.use(require("body-parser").text());
 
