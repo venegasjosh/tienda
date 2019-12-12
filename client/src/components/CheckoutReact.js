@@ -58,7 +58,7 @@ class CheckoutReact extends Component {
                     <h3>On Sale · ${this.props.grandTotal}</h3>
                 </div>
                 <StripeCheckout
-                    stripeKey="pk_test_LOtzCZdEU2A1hTZOYzO6zOSN008JLYM0SA"
+                    stripeKey="pk_test_GuKEoSwdIr3SOG1wDhteerjE00XZisKgDs"
                     token={handleToken}
                     amount={this.props.grandTotal * 100}
                     name={this.state.purchMent}
