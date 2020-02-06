@@ -699,7 +699,7 @@ router.post("/", (req, res) => {
   if (req.session.address2) {
     console.log("Hitting in Address 2 area")
     // if(state === undefined) {state = ""}
-    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
+    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.address2 + " " + req.session.state + ". " + req.session.zipCode;
     const newOrder = new Order({
       orderId: req.session.orderID,
       firstName: req.session.firstName,
@@ -719,7 +719,7 @@ router.post("/", (req, res) => {
     if (req.session.address2 === undefined) { address2 = "" }
     // if(state === undefined) {state = ""}
     // console.log("HERE GRAND TOTAL: ", total)
-    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.state.toUpperCase() + ". " + req.session.zipCode;
+    const newAddress = req.session.address1 + " " + req.session.address2 + " " + req.session.state + ". " + req.session.zipCode;
     const newOrder = new Order({
       orderId: req.session.orderID,
 
