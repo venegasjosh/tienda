@@ -44,9 +44,9 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(localStorage.jwtToken);
   // Set user and isAuthenticated
 
-  // HERE BITCH!!!!--------------
+  // HERE!!!!--------------
   store.dispatch(setCurrentUser(decoded));
-  // HERE BITCH!!!!--------------
+  // HERE!!!!--------------
 
   // Check for expired token
   const currentTime = Date.now() / 1000;

@@ -11,6 +11,12 @@ const passport = require("passport");
 const cors = require("cors");
 const port = process.env.PORT || 5000;
 
+
+// // Connect to Mongo:
+mongoose.connect("mongodb+srv://josh:adrienc00l@cluster0-yittl.mongodb.net/tienda",{ useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Mongo DB Connected..."))
+    .catch(err => console.log(err));
+
 // Session:
 const session = require("express-session");
 app.use(session({
@@ -19,6 +25,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: { maxAge: 600000 } // One hour I believe
 }));
+
+
 
 // Stripe Middleware:
 const stripe = require("stripe")("sk_test_0XQb2SgTnVlKehrZ1FDP8lcA00yFcgaoDL");
@@ -54,9 +62,6 @@ app.use("/api/orders", orders);
 app.use("/api/carts", carts);
 
 
-// // Connect to Mongo:
-mongoose.connect(db, mongoConfig)
-    .then(() => console.log("Mongo DB Connected..."))
-    .catch(err => console.log(err));
+
 
 app.listen(port, () => console.log(`Server Running On Port: ${port}`));
